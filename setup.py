@@ -21,7 +21,7 @@ else:
 
 setup(
     name='modsecurity',
-    version='0.1.0',
+    version='0.1.1',
     author='Cyril Jouve',
     author_email='jv.cyril@gmail.com',
     license='GPL-3.0-or-later',

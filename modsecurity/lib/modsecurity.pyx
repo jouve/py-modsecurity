@@ -5,7 +5,7 @@ from .modsecurity cimport ModSecLogCb, ModSecurity
 logger = logging.getLogger(__name__)
 
 cdef void server_log_cb(void *data, const void *ruleMessage):
-    logger.debug('%s', (<char*>ruleMessage).decode())
+    logger.debug('%s', (<char*>ruleMessage).decode(errors='replace'))
 
 cdef class PyModSecurity:
 

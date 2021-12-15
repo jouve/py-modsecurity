@@ -32,6 +32,4 @@ cdef extern from "modsecurity/transaction.h" namespace "modsecurity":
 
         int processLogging()
 
-        int updateStatusCode(int status)
-
         bool intervention(ModSecurityIntervention *it)

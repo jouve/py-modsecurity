@@ -10,25 +10,25 @@ def main():
     modsecurity = ModSecurity()
     print(modsecurity.who_am_i())
     rules_set = RulesSet()
-    rules_set.load(
-        dedent(
-            """\
-        Include conf/modsecurity.conf
-        Include conf/crs-setup.conf
-        Include conf/rules/*.conf
-        """
-        )
-    )
+    # rules_set.load(
+    #    dedent(
+    #        """\
+    #    Include conf/modsecurity.conf
+    #    Include conf/crs-setup.conf
+    #    Include conf/rules/*.conf
+    #    """
+    #    )
+    # )
 
     transaction = Transaction(modsecurity, rules_set)
 
     print(
         'process_connection',
-        transaction.process_connection('127.0.0.1', 80, '127.0.0.1', 8080),
+        transaction.process_connection(b'127.0.0.1', 80, b'127.0.0.1', 8080),
     )
     print('=======>', transaction.intervention())
 
-    print('process_uri', transaction.process_uri('http://localhost/foo.asa', 'GET', '1.0'))
+    print('process_uri', transaction.process_uri(b'http://localhost/foo.asa', b'GET', b'1.0'))
     print('=======>', transaction.intervention())
 
     for key, value in {
@@ -39,7 +39,7 @@ def main():
         'x-spoe-redis': '758',
         'x-forwarded-for': '172.20.0.1',
     }.items():
-        transaction.add_request_header(key, value)
+        transaction.add_request_header(key.encode(), value.encode())
         # print("add_request_header", res)
     print('process_request_headers', transaction.process_request_headers())
     print('=======>', transaction.intervention())
@@ -55,11 +55,11 @@ def main():
         'x-spoe-redis': '758',
         'x-forwarded-for': '172.20.0.1',
     }.items():
-        transaction.add_response_header(key, value)
+        transaction.add_response_header(key.encode(), value.encode())
         # print("add_response_header", res)
     print(
         'process_response_headers',
-        transaction.process_response_headers(200, 'HTTP/1.1'),
+        transaction.process_response_headers(200, b'HTTP/1.1'),
     )
     print('=======>', transaction.intervention())
 
